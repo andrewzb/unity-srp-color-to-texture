@@ -1,0 +1,17 @@
+#pragma kernel SwapColorToTexture
+
+Texture2D<float4> Source;
+shared RWTexture2D<float4> Result;
+
+Texture2D<float4> swapTexture;
+float4 swapColor;
+
+[numthreads(8,8,1)]
+void SwapColorToTexture(uint3 id : SV_DispatchThreadID)
+{
+	float4 sourceColor = Source[id.xy];
+	if (sourceColor.r == swapColor.r && sourceColor.g == swapColor.g && sourceColor.b == swapColor.b)
+		Result[id.xy] = swapTexture[id.xy];
+	else
+		Result[id.xy] = sourceColor;
+}
